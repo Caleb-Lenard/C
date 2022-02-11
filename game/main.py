@@ -1,6 +1,9 @@
 import pygame as pg
 import sys
+import time
 from settings import *
+from sprites import *
+from os import path
 
 class Game:
     def __init__(self):
@@ -11,7 +14,9 @@ class Game:
         self.load_data()
 
     def load_data(self):
-        pass
+        game_folder = path.dirname(__file__)
+        img_folder = path.join(game_folder, 'img')
+        self.hud_font = path.join(img_folder, 'RobotoMono.ttf')
 
     def draw_text(self, text, font_name, size, color, x, y, align='nw'):
         font = pg.font.Font(font_name, size)
@@ -39,6 +44,7 @@ class Game:
 
     def new(self):
         self.all_sprites = pg.sprite.Group()
+        self.units = Units(self, 0)
 
     def run(self):
         self.playing = True
@@ -57,6 +63,7 @@ class Game:
 
     def draw(self):
         self.screen.fill(BG_COLOR)
+        self.draw_text("Units: {}".format(self.units.units), self.hud_font, 30, WHITE, WIDTH - 1900, 10, align="nw")
         pg.display.flip()
 
     def events(self):
